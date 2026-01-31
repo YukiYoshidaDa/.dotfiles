@@ -13,6 +13,7 @@ brew "zsh-syntax-highlighting"
 cask "orbstack" # Docker substitute
 cask "google-chrome"
 cask "visual-studio-code"
+cask "antigravity"
 cask "spotify"
 cask "font-hackgen-nerd"
 cask "vivaldi"

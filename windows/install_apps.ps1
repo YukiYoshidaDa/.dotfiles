@@ -26,20 +26,21 @@ $apps = @(
     # Browsers
     "googlechrome",
     "vivaldi",
-    
+
     # Editors
     "vscode",
-    
+    "antigravity",
+
     # Dev
     "git",
     "powertoys",
-    
+
     # Utils
     "7zip",
     "everything",
     "quicklook",
     "kindle",
-    
+
     # Media/Comm
     "discord",
     "line",
