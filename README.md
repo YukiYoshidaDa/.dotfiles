@@ -41,8 +41,27 @@ Windows (Host), WSL (Ubuntu), および macOS の 3 環境を横断して管理�
    - **拡張機能の自動導入**: `vscode/extensions.txt` を読み込み、`code --install-extension` コマンドによって全拡張機能を自動で一括インストールします。
 
 ### 🐧 WSL (Ubuntu 24.04)
-### 1. 自動テストの実行（Docker 使用）
-リポジリに含まれるテストスイートを使用して、Ubuntu (WSL) 環境でのセットアップスクリプトの動作を検証できます。
+
+WSL環境では、OSのアップデート、必要なツールのインストール、設定ファイルの反映を以下の手順で行います。
+
+1. **セットアップスクリプトの実行**
+   ```bash
+   cd ~/.dotfiles
+   bash wsl/setup.sh
+   ```
+   - **内容**: OSアップデート、`curl`, `git`, `zsh` 等のツールインストール、`fnm`(Node.jsマネージャー)、`Docker Engine` のセットアップ、およびデフォルトシェルの `zsh` 変更。
+
+2. **設定の反映**
+   ```bash
+   bash scripts/link.sh
+   ```
+   - **内容**: `.zshrc` 等のシンボリックリンク作成、および VS Code 拡張機能のインストール。
+
+3. **VS Code について**
+   - Windows 側で `setup.ps1` を実行済みであれば、VS Code の「Remote - WSL」拡張機能を通じて、Windows 側の設定や拡張機能の多くが自動的に WSL 側でも利用可能になります。
+
+#### (検証用) 自動テストの実行
+Dockerを使用して、Ubuntu (WSL) 環境でのセットアップスクリプトの動作を検証できます。
 
 ```bash
 # イメージのビルド
@@ -51,10 +70,7 @@ docker build -t dotfiles-test tests
 # テストの実行 (リポジリをマウントして実行)
 docker run --rm -v $(pwd):/home/testuser/dotfiles dotfiles-test bash tests/run_tests.sh
 ```
-
 成功すると `=== ALL TESTS PASSED ===` と表示されます。
-これは `wsl/setup.sh` によるツール（Docker, fnm等）のインストールや、`scripts/link.sh` によるリンク作成が正しく行われるかを検証します。
-   - **補足**: WSL 上で VS Code を使用する場合、Windows 側で `setup.ps1` を実行していれば、必要な拡張機能の多くは VS Code のリモート機能によって自動的に WSL 側でも利用可能になります。
 
 ### 🍎 macOS
 1. Homebrew を使用してパッケージをインストールします。
