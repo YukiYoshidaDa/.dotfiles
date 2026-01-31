@@ -33,13 +33,11 @@ $apps = @(
     # Dev
     "git",
     "powertoys",
-    "win32-openssh",
     
     # Utils
     "7zip",
     "everything",
     "quicklook",
-    "shizumi",
     "kindle",
     
     # Media/Comm
