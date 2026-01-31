@@ -4,10 +4,10 @@ set -e
 echo "=== STARTING DOTFILES TEST ==="
 
 # 1. Run WSL Setup
-echo ">>> Running wsl/setup.sh..."
+echo ">>> Running wsl/install_tools.sh..."
 # We might need to mock systemd/docker daemon if the script tries to start them, 
-# but setup.sh mainly installs packages.
-bash wsl/setup.sh
+# but install_tools.sh mainly installs packages.
+bash wsl/install_tools.sh
 
 # 2. Run Link Script
 echo ">>> Running scripts/link.sh..."

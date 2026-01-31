@@ -18,7 +18,7 @@ Windows (Host), WSL (Ubuntu), および macOS の 3 環境を横断して管理�
 │   ├── install_apps.ps1   # Scoopを使ったアプリ一括インストール
 │   └── setup.ps1          # Windows統合セットアップスクリプト
 ├── wsl/                   # WSL (Ubuntu 24.04) 専用
-│   └── setup.sh           # OSアップデート, Docker, Shellの一括セットアップ
+│   └── install_tools.sh   # OSアップデート, Docker, Shellの一括セットアップ
 ├── mac/                   # macOS 専用
 │   └── Brewfile           # Homebrew パッケージリスト
 └── scripts/               # 共通ユーティリティ
@@ -29,59 +29,41 @@ Windows (Host), WSL (Ubuntu), および macOS の 3 環境を横断して管理�
 
 ## 🚀 セットアップ手順
 
-環境ごとに以下の手順でセットアップを行ってください。
+どの環境でも、以下の手順でセットアップを完了できます。
 
 ### 💻 Windows (Host)
-1. PowerShell を管理者権限で開き、リポジトリ内の `windows/setup.ps1` を実行します。
-   ```powershell
-   cd ~/.dotfiles/windows
-   ./setup.ps1
-   ```
-   - **VS Code 設定の自動反映**: `vscode/settings.json` を Windows 側の VS Code 設定ディレクトリ（`$env:APPDATA\Code\User\`）へ自動的にコピー・配置します。
-   - **拡張機能の自動導入**: `vscode/extensions.txt` を読み込み、`code --install-extension` コマンドによって全拡張機能を自動で一括インストールします。
+PowerShell を管理者権限で開き、以下のコマンドを実行します。
+```powershell
+cd ~/.dotfiles/windows
+./setup.ps1
+```
 
-### 🐧 WSL (Ubuntu 24.04)
-
-WSL環境では、OSのアップデート、必要なツールのインストール、設定ファイルの反映を以下の手順で行います。
-
-1. **セットアップスクリプトの実行**
-   ```bash
-   cd ~/.dotfiles
-   bash wsl/setup.sh
-   ```
-   - **内容**: OSアップデート、`curl`, `git`, `zsh` 等のツールインストール、`fnm`(Node.jsマネージャー)、`Docker Engine` のセットアップ、およびデフォルトシェルの `zsh` 変更。
-
-2. **設定の反映**
-   ```bash
-   bash scripts/link.sh
-   ```
-   - **内容**: `.zshrc` 等のシンボリックリンク作成、および VS Code 拡張機能のインストール。
-
-3. **VS Code について**
-   - Windows 側で `setup.ps1` を実行済みであれば、VS Code の「Remote - WSL」拡張機能を通じて、Windows 側の設定や拡張機能の多くが自動的に WSL 側でも利用可能になります。
-
-#### (検証用) 自動テストの実行
-Dockerを使用して、Ubuntu (WSL) 環境でのセットアップスクリプトの動作を検証できます。
-
+### 🐧 WSL (Ubuntu) & 🍎 macOS
+ターミナルを開き、リポジトリルートで共通セットアップスクリプトを実行します。
 ```bash
-# イメージのビルド
-docker build -t dotfiles-test tests
+cd ~/.dotfiles
+bash setup.sh
+```
+- **Macの場合**: Homebrew (`mac/Brewfile`) のインストール後、各種リンクの設定、VS Code 拡張機能のインストールを行います。
+- **WSLの場合**: システムアップデート、Docker、fnm 等のツールインストール後、各種リンクの設定を行います。
+    - ※ **VS Code 拡張機能について**: Windows 側で `setup.ps1` を実行済みであれば、Remote - WSL 機能により自動的に連携されるため、WSL 側での個別インストールは通常不要です。
 
-# テストの実行 (リポジリをマウントして実行)
+---
+
+## 🛠 各環境の個別セットアップ・検証
+
+共通スクリプトを使わず、特定の処理のみを実行したい場合や検証を行いたい場合は以下を参照してください。
+
+### WSL (検証用自動テスト)
+Dockerを使用して、WSL環境でのセットアップ動作を検証できます。
+```bash
+docker build -t dotfiles-test tests
 docker run --rm -v $(pwd):/home/testuser/dotfiles dotfiles-test bash tests/run_tests.sh
 ```
-成功すると `=== ALL TESTS PASSED ===` と表示されます。
 
-### 🍎 macOS
-1. Homebrew を使用してパッケージをインストールします。
-   ```bash
-   brew bundle --file mac/Brewfile
-   ```
-2. 共通リンクスクリプトを実行して、設定の反映と VS Code のセットアップを一括で行います。
-   ```bash
-   bash scripts/link.sh
-   ```
-   - **内容**: `.zshrc` 等のリンク作成、VS Code 設定ファイルの配置、拡張機能の自動インストールをすべて行います。
+### 個別スクリプトの実行
+- **設定リンク・VS Code拡張のみ**: `bash scripts/link.sh`
+- **WSLツール群のインストールのみ**: `bash wsl/install_tools.sh`
 
 ---
 
