@@ -1,41 +1,30 @@
 {
-    "editor.fontFamily": "'HackGen Console NF', 'Courier New', monospace",
-    "editor.fontSize": 14,
-    "editor.lineHeight": 1.6,
-    "editor.fontLigatures": true,
-    "editor.formatOnSave": true,
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.codeActionsOnSave": {
-        "source.fixAll.eslint": "explicit"
-    },
+    // --- 操作感 ---
+    "editor.minimap.enabled": false,
+    "editor.renderControlCharacters": true,
+    "editor.suggestSelection": "first",
+    "breadcrumbs.enabled": true,
+    "editor.cursorBlinking": "smooth",
+    "editor.cursorSmoothCaretAnimation": "on",
+    "editor.cursorStyle": "block",
+    "editor.renderLineHighlight": "all",
+    "editor.bracketPairColorization.enabled": true,
+    "diffEditor.hideUnchangedRegions.enabled": true,
     "workbench.iconTheme": "vscode-icons",
-    "workbench.colorTheme": "Default Dark Modern",
-    
-    // Python
-    "[python]": {
-        "editor.defaultFormatter": "charliermarsh.ruff",
-        "editor.formatOnSave": true,
-        "editor.codeActionsOnSave": {
-            "source.fixAll": "explicit",
-            "source.organizeImports": "explicit"
-        }
-    },
-    "python.languageServer": "Pylance",
-    "python.analysis.typeCheckingMode": "basic",
 
-    // Git
-    "git.autofetch": true,
-    "git.enableSmartCommit": true,
-
-    // Terminal
+    // --- 見た目 ---
+    "editor.fontFamily": "'HackGen Console NF', 'Fira Code', Consolas, monospace",
+    "editor.fontLigatures": true,
+    "editor.fontSize": 17,
+    "editor.lineHeight": 1.6,
     "terminal.integrated.fontFamily": "'HackGen Console NF'",
-    "terminal.integrated.defaultProfile.windows": "PowerShell",
 
-    // Files
+    // --- 共通の振る舞い ---
+    "editor.formatOnSave": true,
     "files.insertFinalNewline": true,
     "files.trimTrailingWhitespace": true,
-    "files.associations": {
-        "*.zshrc": "shellscript",
-        ".zshrc": "shellscript"
-    }
+    "files.autoGuessEncoding": true,
+    "git.autofetch": true,
+    "git.confirmSync": false
+
 }
