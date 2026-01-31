@@ -1,0 +1,24 @@
+# Taps
+tap "homebrew/bundle"
+tap "homebrew/services"
+
+# Brew formulas
+brew "git"
+brew "gh"
+brew "fnm"
+brew "bat"
+brew "eza"
+brew "fzf"
+brew "ripgrep"
+brew "zsh-autosuggestions"
+brew "zsh-syntax-highlighting"
+
+# Casks
+cask "orbstack" # Docker substitute
+cask "google-chrome"
+cask "visual-studio-code"
+cask "discord"
+cask "slack"
+cask "spotify"
+cask "raycast"
+cask "font-hackgen-nerd"

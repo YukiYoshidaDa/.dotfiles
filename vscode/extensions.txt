@@ -1,0 +1,41 @@
+# AI
+github.copilot
+github.copilot-chat
+
+# General / Utils
+ms-ceintl.vscode-language-pack-ja
+streetsidesoftware.code-spell-checker
+vscode-icons-team.vscode-icons
+yzhang.markdown-all-in-one
+eamodio.gitlens
+editorconfig.editorconfig
+usernamehw.errorlens
+oderwat.indent-rainbow
+ionutvmi.path-autocomplete
+
+# Python
+ms-python.python
+ms-python.vscode-pylance
+charliermarsh.ruff
+njpwerner.autodocstring
+ms-python.debugpy
+ms-python.vscode-python-envs
+
+# React / Web
+dsznajder.es7-react-js-snippets
+esbenp.prettier-vscode
+dbaeumer.vscode-eslint
+bradlc.vscode-tailwindcss
+ecmel.vscode-html-css
+jeremyrajan.webpack
+
+# Docker / Remote
+ms-azuretools.vscode-docker
+ms-azuretools.vscode-containers
+ms-vscode-remote.remote-wsl
+ms-vscode-remote.remote-ssh
+ms-vscode-remote.remote-ssh-edit
+ms-vscode-remote.vscode-remote-extensionpack
+ms-vscode-remote.remote-containers
+ms-vscode.remote-explorer
+ms-vscode.remote-server
