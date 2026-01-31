@@ -12,12 +12,22 @@ files=(
     "common/.gitignore_global:$HOME/.gitignore_global"
 )
 
-# Mac-specific VSCode settings path
+# VS Code / Antigravity settings path
 if [[ "$OS_TYPE" == "Darwin" ]]; then
-    VSCODE_USER_DIR="$HOME/Library/Application Support/Code/User"
+    # macOS
     files+=(
-        "vscode/settings.json:$VSCODE_USER_DIR/settings.json"
-        "vscode/keybindings.json:$VSCODE_USER_DIR/keybindings.json"
+        "vscode/settings.json:$HOME/Library/Application Support/Code/User/settings.json"
+        "vscode/keybindings.json:$HOME/Library/Application Support/Code/User/keybindings.json"
+        "vscode/settings.json:$HOME/Library/Application Support/Antigravity/User/settings.json"
+        "vscode/keybindings.json:$HOME/Library/Application Support/Antigravity/User/keybindings.json"
+    )
+else
+    # WSL / Linux
+    files+=(
+        "vscode/settings.json:$HOME/.vscode-server/data/Machine/settings.json"
+        "vscode/keybindings.json:$HOME/.vscode-server/data/Machine/keybindings.json"
+        "vscode/settings.json:$HOME/.antigravity-server/data/Machine/settings.json"
+        "vscode/keybindings.json:$HOME/.antigravity-server/data/Machine/keybindings.json"
     )
 fi
 
@@ -52,23 +62,25 @@ for entry in "${files[@]}"; do
     echo "Linked $target_path -> $source_path"
 done
 
-# Install VSCode Extensions
-if command -v code &> /dev/null; then
-    echo ""
-    echo "--- Installing VS Code Extensions ---"
-    EXT_FILE="$DOTFILES_DIR/vscode/extensions.txt"
-    if [ -f "$EXT_FILE" ]; then
-        grep -v '^#' "$EXT_FILE" | grep -v '^$' | while read -r line; do
-            echo "Installing extension: $line"
-            code --install-extension "$line" --force
-        done
+# Install Extensions (VS Code & Antigravity)
+for cmd in "code" "agy"; do
+    if command -v "$cmd" &> /dev/null; then
+        echo ""
+        echo "--- Installing extensions for $cmd ---"
+        EXT_FILE="$DOTFILES_DIR/vscode/extensions.txt"
+        if [ -f "$EXT_FILE" ]; then
+            grep -v '^#' "$EXT_FILE" | grep -v '^$' | while read -r line; do
+                echo "Installing extension for $cmd: $line"
+                "$cmd" --install-extension "$line" --force
+            done
+        else
+            echo "Warning: extensions.txt not found at $EXT_FILE"
+        fi
     else
-        echo "Warning: extensions.txt not found at $EXT_FILE"
+        echo ""
+        echo "Warning: '$cmd' command not found. Skipping extension installation for $cmd."
     fi
-else
-    echo ""
-    echo "Warning: 'code' command not found. Please ensure VS Code is installed and in your PATH."
-fi
+done
 
 echo ""
 echo "Setup complete!"

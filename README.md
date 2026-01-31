@@ -88,6 +88,15 @@ docker run --rm -v $(pwd):/home/testuser/dotfiles dotfiles-test bash tests/run_t
 
 - **[extensions.txt](file:///Users/yuki/.dotfiles/vscode/extensions.txt)**: Windows/WSL/Mac で必要な拡張機能を統合したリスト。
 - **[settings.json](file:///Users/yuki/.dotfiles/vscode/settings.json)**: 保存時自動整形（Ruff/Prettier）、HackGen-NF フォント指定など。
+- **[extensions.txt](file:///Users/yuki/.dotfiles/vscode/extensions.txt)**: 両エディタで共通の拡張機能リスト。
+
+### 3. Antigravity エディタの導入
+
+Antigravity (AI-native IDE) を利用する場合：
+1. [公式サイト](https://antigravity.im/)から各OS用のインストーラをダウンロードしてインストールしてください。
+2. インストール後、各OSのセットアップスクリプト (`setup.sh` または `setup.ps1`) を実行（または再実行）することで、VS Code と同じ設定と拡張機能が自動的に同期されます。
+    - **Mac/WSL**: `agy` コマンドが利用可能な状態であれば、拡張機能も自動インストールされます。
+    - **Windows**: `agy` コマンドがパスに通っていれば、拡張機能も自動インストールされます。
 
 ---
 
