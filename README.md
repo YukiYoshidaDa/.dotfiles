@@ -6,13 +6,18 @@ Windows (Host), WSL (Ubuntu), および macOS の 3 環境を横断して管理�
 
 ```text
 .dotfiles/
+├── setup.sh               # 全OS共通の一撃セットアップスクリプト
 ├── common/                # OS共通設定
-│   ├── .zshrc             # zsh設定（Mac/WSL分岐ロジック含む）
-│   ├── .gitconfig         # Git共通設定（ユーザー情報・エイリアス）
-│   └── .gitignore_global  # 全OS共通の無視設定
+│   ├── .zshrc             # zshエントリーポイント
+│   ├── .gitconfig         # Git共通設定
+│   ├── .gitignore_global  # 全OS共通の無視設定
+│   └── zsh/               # zsh設定モジュール
+│       ├── aliases.zsh    # エイリアス (eza, git, docker等)
+│       ├── plugins.zsh    # プラグイン読み込みロジック
+│       └── utils.zsh      # OS判別・プロンプト設定
 ├── vscode/                # VS Code用設定
 │   ├── extensions.txt     # 拡張機能リスト（Win/WSL/Mac統合版）
-│   ├── settings.json      # エディタ設定（フォーマッタ・フォント等）
+│   ├── settings.json      # エディタ設定
 │   └── keybindings.json   # キーバインド設定
 ├── windows/               # Windows (Host) 専用
 │   ├── install_apps.ps1   # Scoopを使ったアプリ一括インストール
@@ -71,7 +76,11 @@ docker run --rm -v $(pwd):/home/testuser/dotfiles dotfiles-test bash tests/run_t
 
 ### 1. 共通設定 (`common/`)
 
-- **[.zshrc](file:///Users/yuki/.dotfiles/common/.zshrc)**: Mac/WSL 自動判別。`update` や `o` (open) エイリアス、OSごとのプロンプト色分けを搭載。
+- **[.zshrc](file:///Users/yuki/.dotfiles/common/.zshrc)**: 設定のエントリーポイント。`common/zsh/` 配下のモジュールを読み込みます。
+- **[zsh/](file:///Users/yuki/.dotfiles/common/zsh/)**:
+    - **aliases.zsh**: `eza` (モダンls) を用いた `lz` コマンドや、Git (`st`, `ga`...), Docker (`d`, `dps`...) の便利なエイリアス集。
+    - **plugins.zsh**: `zsh-autosuggestions` (入力補完) や `zsh-syntax-highlighting` (色付け) をOSごとに適切なパスから読み込みます。
+    - **utils.zsh**: OS自動判別ロジックやプロンプトのカラーリング設定。
 - **[.gitconfig](file:///Users/yuki/.dotfiles/common/.gitconfig)**: Yuki Yoshida 名義の設定と便利なエイリアス、および共通無視設定の参照。
 - **[.gitignore_global](file:///Users/yuki/.dotfiles/common/.gitignore_global)**: `.DS_Store`, `node_modules`, `.vscode` など全OS共通のクリーンアップ設定。
 
