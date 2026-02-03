@@ -6,16 +6,7 @@ echo "--- Starting WSL setup ---"
 # 1. Update system and install basic tools
 echo "--- 1. Updating system ---"
 sudo apt update && sudo apt upgrade -y
-sudo apt install -y curl git zsh build-essential unzip ca-certificates gnupg
-
-# Install eza (modern ls)
-echo "--- Installing eza ---"
-sudo mkdir -p /etc/apt/keyrings
-wget -qO- https://raw.githubusercontent.com/eza-community/eza/main/deb.asc | sudo gpg --dearmor -o /etc/apt/keyrings/gierens.gpg
-echo "deb [signed-by=/etc/apt/keyrings/gierens.gpg] http://deb.gierens.de stable main" | sudo tee /etc/apt/sources.list.d/gierens.list
-sudo chmod 644 /etc/apt/keyrings/gierens.gpg /etc/apt/sources.list.d/gierens.list
-sudo apt update
-sudo apt install -y eza
+sudo apt install -y curl git zsh build-essential unzip eza
 
 # Install zsh plugins
 echo "--- Installing zsh plugins ---"
