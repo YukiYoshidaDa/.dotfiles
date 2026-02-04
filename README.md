@@ -1,104 +1,89 @@
 # dotfiles
 
-Windows (Host), WSL (Ubuntu), および macOS の 3 環境を横断して管理するための設定リポジトリです。
+Windows (Host), WSL (Ubuntu), および macOS の 3 環境で、**「同じ操作感」「同じツール」** を実現するための設定リポジトリです。
+OSごとの差異を吸収しつつ、メンテナンスしやすい「機能別ディレクトリ構成」を採用しています。
+
+## 🎯 コンセプト
+
+*   **Hybrid Package Management**:
+    *   **OS基盤**: OS標準のパッケージマネージャ (`apt`, `scoop`, `brew` core) で堅実に管理。
+    *   **開発ツール**: 最新機能が必要な CLI ツール (`starship`, `mise`, `bat` 等) は `Homebrew` で一元管理（WSL/Mac共通）。
+*   **Symmetrical Architecture**:
+    *   Mac/Linux (`.sh`) と Windows (`.ps1`) で、完全に同じ構造・役割分担のスクリプトを提供。
 
 ## 📁 ディレクトリ構成
 
+役割ごとにディレクトリを分割しています。
+
 ```text
-.dotfiles/
-├── setup.sh               # 全OS共通の一撃セットアップスクリプト
-├── common/                # OS共通設定
-│   ├── .zshrc             # zshエントリーポイント
-│   ├── .gitconfig         # Git共通設定
-│   ├── .gitignore_global  # 全OS共通の無視設定
-│   └── zsh/               # zsh設定モジュール
-│       ├── aliases.zsh    # エイリアス (eza, git, docker等)
-│       ├── plugins.zsh    # プラグイン読み込みロジック
-│       └── utils.zsh      # OS判別・プロンプト設定
-├── vscode/                # VS Code用設定
-│   ├── extensions.txt     # 拡張機能リスト（Win/WSL/Mac統合版）
-│   ├── settings.json      # エディタ設定
-│   └── keybindings.json   # キーバインド設定
-├── windows/               # Windows (Host) 専用
-│   ├── install_apps.ps1   # Scoopを使ったアプリ一括インストール
-│   └── setup.ps1          # Windows統合セットアップスクリプト
-├── wsl/                   # WSL (Ubuntu 24.04) 専用
-│   └── install_tools.sh   # OSアップデート, Docker, Shellの一括セットアップ
-├── mac/                   # macOS 専用
-│   └── Brewfile           # Homebrew パッケージリスト
-└── scripts/               # 共通ユーティリティ
-    └── link.sh            # Mac/WSL用シンボリックリンク作成スクリプト
+.
+├── setup.sh                 # [Mac/WSL] 統合セットアップ（これを実行するだけ）
+├── setup.ps1                # [Windows] 統合セットアップ（これを実行するだけ）
+├── common/                  # OS共通の設定 (Brewfile, .zshrc, .gitconfig)
+├── vscode/                  # VS Code / Antigravity 機能モジュール
+│   ├── settings.json        # 共通設定ファイル
+│   ├── install_extensions.sh  # [Mac/WSL] 拡張機能インストーラー
+│   └── install_extensions.ps1 # [Windows] 拡張機能インストーラー
+├── scripts/                 # ヘルパー (リンク作成ロジック等)
+│   ├── link.sh              # [Mac/WSL] シンボリックリンク作成
+│   └── link.ps1             # [Windows] シンボリックリンク作成
+├── windows/                 # [Windows] OS依存インストーラー (Scoop)
+├── mac/                     # [Mac] OS依存インストーラー (Homebrew)
+└── wsl/                     # [WSL] OS依存インストーラー (Apt/Brew)
 ```
 
 ---
 
 ## 🚀 セットアップ手順
 
-どの環境でも、以下の手順でセットアップを完了できます。
+どの環境でも、**ルートにある `setup` スクリプトを一回実行するだけ** で完了します。
 
 ### 💻 Windows (Host)
-PowerShell を管理者権限で開き、以下のコマンドを実行します。
+PowerShell を「管理者権限」で開き、以下のコマンドを実行します。
+
 ```powershell
-cd ~/.dotfiles/windows
+cd ~/.dotfiles
 ./setup.ps1
 ```
 
 ### 🐧 WSL (Ubuntu) & 🍎 macOS
-ターミナルを開き、リポジトリルートで共通セットアップスクリプトを実行します。
+ターミナルを開き、以下のコマンドを実行します。
+
 ```bash
 cd ~/.dotfiles
 bash setup.sh
 ```
-- **Macの場合**: Homebrew (`mac/Brewfile`) のインストール後、各種リンクの設定、VS Code 拡張機能のインストールを行います。
-- **WSLの場合**: システムアップデート、Docker、fnm 等のツールインストール後、各種リンクの設定を行います。
-    - ※ **VS Code 拡張機能について**: Windows 側で `setup.ps1` を実行済みであれば、Remote - WSL 機能により自動的に連携されるため、WSL 側での個別インストールは通常不要です。
+
+### 何が行われるか？
+1.  **OS依存ツールのインストール**: `git`, `zsh`, `brew` などを自動インストール。
+2.  **共通CLIツールのインストール**: `common/Brewfile` に定義されたツール (`starship`, `eza` 等) を導入。
+3.  **設定ファイルのリンク**: `.zshrc`, `.gitconfig` などのシンボリックリンクを作成。
+4.  **VS Code 設定**: 設定ファイルの配布と、拡張機能の自動インストール。
 
 ---
 
-## 🛠 各環境の個別セットアップ・検証
+## 🛠 メンテナンス・カスタマイズ
 
-共通スクリプトを使わず、特定の処理のみを実行したい場合や検証を行いたい場合は以下を参照してください。
+### ツールを追加したい場合
+*   **共通のCLIツール (bat, fzf等)**: `common/Brewfile` に追記してください。
+*   **MacのGUIアプリ**: `mac/Brewfile` に追記してください。
+*   **Windowsのアプリ**: `windows/install.ps1` のリストを編集してください。
 
-### WSL (検証用自動テスト)
-Dockerを使用して、WSL環境でのセットアップ動作を検証できます。
-```bash
-docker build -t dotfiles-test tests
-docker run --rm -v $(pwd):/home/testuser/dotfiles dotfiles-test bash tests/run_tests.sh
-```
-
-### 個別スクリプトの実行
-- **設定リンク・VS Code拡張のみ**: `bash scripts/link.sh`
-- **WSLツール群のインストールのみ**: `bash wsl/install_tools.sh`
+### 設定を更新した場合
+設定ファイルを変更したり、`Brewfile` を更新した後は、再度 `setup` スクリプトを実行すれば反映されます（冪等性があります）。
 
 ---
 
 ## 🛠 各コンポーネントの詳細
 
-### 1. 共通設定 (`common/`)
+### Antigravity / VS Code 対応
+本リポジトリは、**Antigravity** に完全対応しています。
+VS Code用の設定 (`vscode/`) は、Antigravity (`bin: agy`) に対しても自動的に適用されます。
 
-- **[.zshrc](file:///Users/yuki/.dotfiles/common/.zshrc)**: 設定のエントリーポイント。`common/zsh/` 配下のモジュールを読み込みます。
-- **[zsh/](file:///Users/yuki/.dotfiles/common/zsh/)**:
-    - **aliases.zsh**: `eza` (モダンls) を用いた `lz` コマンドや、Git (`st`, `ga`...), Docker (`d`, `dps`...) の便利なエイリアス集。
-    - **plugins.zsh**: `zsh-autosuggestions` (入力補完) や `zsh-syntax-highlighting` (色付け) をOSごとに適切なパスから読み込みます。
-    - **utils.zsh**: OS自動判別ロジックやプロンプトのカラーリング設定。
-- **[.gitconfig](file:///Users/yuki/.dotfiles/common/.gitconfig)**: Yuki Yoshida 名義の設定と便利なエイリアス、および共通無視設定の参照。
-- **[.gitignore_global](file:///Users/yuki/.dotfiles/common/.gitignore_global)**: `.DS_Store`, `node_modules`, `.vscode` など全OS共通のクリーンアップ設定。
+### シェル (Zsh & Starship)
+*   **Zsh**: 全OSで Zsh をデフォルトシェルとして採用。
+*   **Starship**: 高速・高機能なプロンプトを導入済み。`common/starship.toml` で設定可能。
+*   **Mise**: 言語バージョン管理 (`node`, `python`, `go`) は `mise` で統一管理。
 
-### 2. VS Code 設定 (`vscode/`)
-
-- **[extensions.txt](file:///Users/yuki/.dotfiles/vscode/extensions.txt)**: Windows/WSL/Mac で必要な拡張機能を統合したリスト。
-- **[settings.json](file:///Users/yuki/.dotfiles/vscode/settings.json)**: 保存時自動整形（Ruff/Prettier）、HackGen-NF フォント指定など。
-- **[extensions.txt](file:///Users/yuki/.dotfiles/vscode/extensions.txt)**: 両エディタで共通の拡張機能リスト。
-
-### 3. Antigravity エディタの導入
-
-Antigravity (AI-native IDE) を利用する場合：
-1. [公式サイト](https://antigravity.im/)から各OS用のインストーラをダウンロードしてインストールしてください。
-2. インストール後、各OSのセットアップスクリプト (`setup.sh` または `setup.ps1`) を実行（または再実行）することで、VS Code と同じ設定と拡張機能が自動的に同期されます。
-    - **Mac/WSL**: `agy` コマンドが利用可能な状態であれば、拡張機能も自動インストールされます。
-    - **Windows**: `agy` コマンドがパスに通っていれば、拡張機能も自動インストールされます。
-
----
-
-## 💡 Tips
-- **バックアップ**: `link.sh` および `setup.ps1` は、既存の設定ファイルを上書きする前に `.bak` 拡張子で自動的にバックアップを作成します。
+### バックアップ
+`setup.sh` / `setup.ps1` は、既存の設定ファイルを上書きする前に、自動的に `.bak` ファイルとしてバックアップを作成します。安心して実行してください。

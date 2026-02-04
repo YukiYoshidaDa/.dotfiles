@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-echo "--- Starting WSL setup ---"
+echo "--- Starting WSL setup (Install Phase) ---"
 
 # 1. Update system and install basic tools (OS Infrastructure)
 echo "--- 1. Updating system (APT) ---"
@@ -14,10 +14,8 @@ echo "--- Cleaning up APT packages (migrating to Brew) ---"
 sudo apt remove -y bat ripgrep tldr fzf eza || true
 sudo apt autoremove -y
 
-# Install zsh plugins (Keep manual install for stability/performance or move to brew later.
-# For now, keeping as is per plan to minimize breakage, but could utilize brew).
-# Plan says: "zsh ... OS標準". Plugins are grey area but manual clone is fine.
-echo "--- Installing zsh plugins ---"
+# Install zsh plugins
+echo "--- Installing zsh plugins (Manual) ---"
 ZSH_PLUGINS_DIR="$HOME/.zsh/plugins"
 mkdir -p "$ZSH_PLUGINS_DIR"
 
@@ -47,7 +45,6 @@ fi
 echo "--- 3. Installing Common Dev Tools (Brewfile) ---"
 if command -v brew &> /dev/null; then
     echo "Running brew bundle..."
-    # Install gcc from brew if recommended, but we have build-essential.
     brew bundle --file="$HOME/.dotfiles/common/Brewfile"
 else
     echo "Error: Homebrew not found. Skipping brew bundle."
@@ -73,5 +70,4 @@ if [[ "$SHELL" != "$(which zsh)" ]]; then
 fi
 
 echo ""
-echo "WSL setup complete!"
-echo "Next: Run 'bash scripts/link.sh' to apply your dotfiles."
+echo "WSL installation complete!"
