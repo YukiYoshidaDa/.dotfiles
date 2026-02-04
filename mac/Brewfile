@@ -1,19 +1,16 @@
-# Brew formulas
-brew "git"
-brew "gh"
-brew "fnm"
-brew "bat"
-brew "eza"
-brew "fzf"
-brew "ripgrep"
-brew "zsh-autosuggestions"
-brew "zsh-syntax-highlighting"
+# Mac-specific Configurations
 
-# Casks
-cask "orbstack" # Docker substitute
-cask "google-chrome"
-cask "visual-studio-code"
+# Load common tools
+# Note: Run 'brew bundle --file=../common/Brewfile' to install common tools
+
+# Mac specific CLI (if any)
+# brew "mas"
+
+# Casks (GUI Apps)
 cask "antigravity"
-cask "spotify"
 cask "font-hackgen-nerd"
+cask "google-chrome"
+cask "orbstack"
+cask "spotify"
+cask "visual-studio-code"
 cask "vivaldi"
