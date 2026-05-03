@@ -1,3 +1,4 @@
+{{- if ne .chezmoi.os "windows" -}}
 #!/bin/bash
 
 # Brewfile hash: {{ include "Brewfile.tmpl" | sha256sum }}
@@ -6,3 +7,4 @@ if command -v brew &> /dev/null; then
     echo "Running brew bundle..."
     brew bundle --file={{ joinPath .chezmoi.sourceDir "Brewfile.tmpl" }}
 fi
+{{- end -}}
