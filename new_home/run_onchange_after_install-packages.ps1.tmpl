@@ -1,0 +1,25 @@
+{{- if eq .chezmoi.os "windows" -}}
+# Windows Winget Installation Script
+$apps = @(
+    "Google.Chrome",
+    "Vivaldi.Vivaldi",
+    "Microsoft.VisualStudioCode",
+    "Microsoft.PowerToys",
+    "Git.Git",
+    "7zip.7zip",
+    "voidtools.Everything",
+    "Discord.Discord",
+    "Spotify.Spotify",
+    "VideoLAN.VLC",
+    "Valve.Steam",
+    "Neovim.Neovim"
+)
+
+foreach ($app in $apps) {
+    Write-Host "Checking $app..."
+    winget install --id $app --silent --accept-package-agreements --accept-source-agreements
+}
+
+# Fonts via Winget (if available) or instructions
+Write-Host "Please install JetBrains Mono Nerd Font manually or via setup script."
+{{- end }}

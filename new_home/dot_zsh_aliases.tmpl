@@ -1,0 +1,46 @@
+# Aliases managed by chezmoi
+
+# --- List (eza) ---
+if command -v eza &> /dev/null; then
+  alias ls='eza --icons'
+  alias ll='eza --icons -l'
+  alias la='eza --icons -la'
+  alias lt='eza --icons --tree --level=2'
+else
+  alias ll='ls -l'
+  alias la='ls -la'
+fi
+
+# --- Git ---
+alias g='git'
+alias gs='git status'
+alias ga='git add'
+alias gaa='git add --all'
+alias gc='git commit -m'
+alias gp='git push'
+alias gl='git pull'
+alias gd='git diff'
+alias gco='git checkout'
+alias gb='git branch'
+
+# --- Docker ---
+alias d='docker'
+alias dps='docker ps'
+alias dc='docker compose'
+alias dcu='docker compose up -d'
+alias dcd='docker compose down'
+
+# --- Utils ---
+alias ..='cd ..'
+alias ...='cd ../..'
+alias c='clear'
+alias h='history'
+
+# OS specific Open
+{{- if eq .chezmoi.os "darwin" }}
+alias o='open'
+alias update='brew update && brew upgrade'
+{{- else }}
+alias o='explorer.exe' # WSL default
+alias update='sudo apt update && sudo apt upgrade'
+{{- end }}

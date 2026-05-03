@@ -1,0 +1,67 @@
+# .zshrc managed by chezmoi
+
+# --- Environment ---
+export LANG=en_US.UTF-8
+export EDITOR="nvim"
+
+# --- OS Detection ---
+{{- if eq .chezmoi.os "darwin" }}
+# macOS specific
+{{- else if eq .chezmoi.os "linux" }}
+# Linux/WSL specific
+{{- end }}
+
+# --- Prompt (Minimalist) ---
+PROMPT='%F{cyan}%n@%m%f %F{blue}%~%f %F{yellow}%#%f '
+
+# --- Tools Initialization ---
+
+# Homebrew
+{{- if eq .chezmoi.os "darwin" }}
+if [ -d "/opt/homebrew" ]; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
+{{- else if eq .chezmoi.os "linux" }}
+if [ -d "/home/linuxbrew/.linuxbrew" ]; then
+    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+fi
+{{- end }}
+
+# Mise
+if command -v mise &> /dev/null; then
+  eval "$(mise activate zsh)"
+fi
+
+# Zoxide
+if command -v zoxide &> /dev/null; then
+  eval "$(zoxide init zsh)"
+fi
+
+# FZF
+if command -v fzf &> /dev/null; then
+  {{- if eq .chezmoi.os "darwin" }}
+  [ -f "$(brew --prefix)/opt/fzf/shell/key-bindings.zsh" ] && source "$(brew --prefix)/opt/fzf/shell/key-bindings.zsh"
+  [ -f "$(brew --prefix)/opt/fzf/shell/completion.zsh" ] && source "$(brew --prefix)/opt/fzf/shell/completion.zsh"
+  {{- else }}
+  [ -f /usr/share/doc/fzf/examples/key-bindings.zsh ] && source /usr/share/doc/fzf/examples/key-bindings.zsh
+  {{- end }}
+fi
+
+# --- Plugins ---
+# (Assumes plugins are installed via brew or manual git clone)
+{{- if eq .chezmoi.os "darwin" }}
+source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh 2>/dev/null
+source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh 2>/dev/null
+{{- else }}
+[ -f ~/.zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh ] && source ~/.zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+[ -f ~/.zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ] && source ~/.zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+{{- end }}
+
+# --- Aliases ---
+[ -f ~/.zsh_aliases ] && source ~/.zsh_aliases
+
+# --- History ---
+HISTFILE=~/.zsh_history
+HISTSIZE=10000
+SAVEHIST=10000
+setopt SHARE_HISTORY
