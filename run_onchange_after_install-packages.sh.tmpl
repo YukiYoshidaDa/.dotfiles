@@ -5,6 +5,7 @@
 
 if command -v brew &> /dev/null; then
     echo "Running brew bundle..."
-    brew bundle --file={{ joinPath .chezmoi.sourceDir "Brewfile.tmpl" }}
+    # テンプレート(tmpl)ではなく、反映後の実ファイルを読み込むように修正
+    brew bundle --file=~/Brewfile
 fi
 {{- end -}}

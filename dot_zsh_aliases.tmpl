@@ -11,6 +11,13 @@ else
   alias la='ls -la'
 fi
 
+# --- Editor (Neovim) ---
+if command -v nvim &> /dev/null; then
+  alias v='nvim'
+  alias vi='nvim'
+  alias vim='nvim'
+fi
+
 # --- Git ---
 alias g='git'
 alias gs='git status'
